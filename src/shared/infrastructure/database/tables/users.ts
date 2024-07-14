@@ -15,14 +15,18 @@ export const createUsersTableQuery = sql`
 `;
 
 export const users = sqliteTable("users", {
-  id: integer("id", { mode: "number" }).primaryKey({ autoIncrement: true }),
-  email: text("email").notNull().unique(),
-  username: text("username").notNull().unique(),
-  firstName: text("firstName").notNull(),
-  lastName: text("lastName").notNull(),
-  password: text("password").notNull(),
-  createdAt: integer("createdAt", { mode: "number" }).$defaultFn(() => Math.floor(new Date().getTime() / 1000)),
-  updateAt: integer("updatedAt", { mode: "number" }).$onUpdate(() => Math.floor(new Date().getTime() / 1000)),
+	id: integer("id", { mode: "number" }).primaryKey({ autoIncrement: true }),
+	email: text("email").notNull().unique(),
+	username: text("username").notNull().unique(),
+	firstName: text("firstName").notNull(),
+	lastName: text("lastName").notNull(),
+	password: text("password").notNull(),
+	createdAt: integer("createdAt", { mode: "number" }).$defaultFn(() =>
+		Math.floor(new Date().getTime() / 1000),
+	),
+	updateAt: integer("updatedAt", { mode: "number" }).$onUpdate(() =>
+		Math.floor(new Date().getTime() / 1000),
+	),
 });
 
 export type User = typeof users.$inferSelect;
