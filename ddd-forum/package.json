@@ -1,0 +1,39 @@
+{
+  "name": "ddd-forum",
+  "module": "src/main.ts",
+  "type": "module",
+  "author": "Jens van Hellemondt",
+  "engines": {
+    "bun": "^1.1.12"
+  },
+  "private": true,
+  "scripts": {
+    "dev": "bun --hot --watch src/main.ts",
+    "build": "bun build ./src/main.ts --splitting --outdir=./dist --target=bun --tsconfig=tsconfig.build.json",
+    "start": "NODE_ENV=production bun dist/main.js",
+    "lint": "biome check --write ./src",
+    "test": "NODE_ENV=test vitest --watch",
+    "test:cov": "NODE_ENV=test vitest --coverage",
+    "type:check": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.8.3",
+    "@eslint/js": "^9.4.0",
+    "@faker-js/faker": "^8.4.1",
+    "@total-typescript/ts-reset": "^0.5.1",
+    "@types/bun": "latest",
+    "@types/lodash-es": "^4.17.12",
+    "vite-tsconfig-paths": "^4.3.2",
+    "vitest": "^1.6.0"
+  },
+  "peerDependencies": {
+    "class-validator": "^0.14.1",
+    "lodash-es": "^4.17.21",
+    "oxide.ts": "^1.1.0",
+    "ulid": "^2.3.0",
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "hono": "^4.4.13"
+  }
+}
