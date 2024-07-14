@@ -1,6 +1,9 @@
+import "./tables";
 import { sql } from "drizzle-orm";
 import { db } from "./connection";
 import { users } from "./tables/users";
+import { generateFakeUsers } from "./seeds/users";
+import type { InsertUser } from "./tables/users";
 
 export const table = {
   users,
@@ -17,5 +20,15 @@ async function databaseHealthCheck(connection: typeof db) {
   }
   console.groupEnd();
 }
+
+const seedDatabase = async () => {
+  await Promise.all(
+    generateFakeUsers(100).map(async (user: InsertUser) => {
+      return db.insert(table.users).values(user).run();
+    }),
+  );
+  console.info("Database has been seeded");
+};
+seedDatabase();
 
 export { db, databaseHealthCheck };
