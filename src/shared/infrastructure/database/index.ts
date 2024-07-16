@@ -1,11 +1,7 @@
 import { sql } from "drizzle-orm";
 import { db } from "./connection";
 import type { Database } from "./connection";
-import { createUserTable, seedUserTable, users } from "./users";
-
-export const table = {
-  users,
-};
+import { createUserTable, seedUserTable } from "./models/users";
 
 async function databaseHealthCheck(connection: Database) {
   console.group("Database connection");
@@ -19,10 +15,6 @@ async function databaseHealthCheck(connection: Database) {
   console.groupEnd();
 }
 
-export { db };
-
-export const makeDatabaseConnection = () => {
-  databaseHealthCheck(db);
-  createUserTable(db);
-  seedUserTable(db);
-};
+databaseHealthCheck(db);
+createUserTable(db);
+seedUserTable(db);
