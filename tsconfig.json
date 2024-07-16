@@ -35,6 +35,7 @@
         "outDir": "./dist",
         "paths": {
             "@testing": ["./src/shared/utils/testing"],
+            "@/*": ["./src/modules/*"],
             "~/*": ["./src/*"]
         }
     },
