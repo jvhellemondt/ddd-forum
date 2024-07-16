@@ -8,20 +8,20 @@ import { describe, expect, it } from "bun:test";
  * It also keeps my tests decoupled from specific testing frameworks, leading to more flexible and manageable code.
  */
 expect.extend({
-  toBeTrue(received) {
-    const { isNot } = this;
-    return {
-      pass: received === true,
-      message: () => `${received} is${isNot ? " not" : ""} true`,
-    };
-  },
-  toBeFalse(received) {
-    const { isNot } = this;
-    return {
-      pass: received === false,
-      message: () => `${received} is${isNot ? " not" : ""} false`,
-    };
-  },
+	toBeTrue(received) {
+		const { isNot } = this;
+		return {
+			pass: received === true,
+			message: () => `${received} is${isNot ? " not" : ""} true`,
+		};
+	},
+	toBeFalse(received) {
+		const { isNot } = this;
+		return {
+			pass: received === false,
+			message: () => `${received} is${isNot ? " not" : ""} false`,
+		};
+	},
 });
 
 export { describe, expect, it };

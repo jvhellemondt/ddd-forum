@@ -1,11 +1,11 @@
 import { users } from "./users";
-import type { User, InsertUser } from "./users";
+import type { InsertUser, User } from "./users";
 
 export const models = {
-  users,
+	users,
 };
 
 export interface Models {
-  User: User;
-  InsertUser: InsertUser;
+	User: User;
+	InsertUser: InsertUser;
 }

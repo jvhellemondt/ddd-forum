@@ -1,6 +1,6 @@
-import { Hono } from "hono";
 import { healthRouter } from "@/common/useCases/getHealth";
 import { usersRouter } from "@/users";
+import { Hono } from "hono";
 
 const app = new Hono();
 
