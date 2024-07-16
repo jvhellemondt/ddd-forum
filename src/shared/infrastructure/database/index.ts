@@ -1,7 +1,7 @@
 import { sql } from "drizzle-orm";
 import { db } from "./connection";
 import type { Database } from "./connection";
-import { users, createUserTable, seedUserTable } from "./users";
+import { createUserTable, seedUserTable, users } from "./users";
 
 export const table = {
   users,
@@ -10,8 +10,8 @@ export const table = {
 async function databaseHealthCheck(connection: Database) {
   console.group("Database connection");
   try {
-    const result = connection.get<Record<string, string>>(sql`select datetime('now') as now;`);
-    console.info(`Database is up, created at ${result.now}`);
+    const result = connection.get<string[]>(sql`select datetime('now');`);
+    console.info(`Database is up, created at ${result[0]}`);
   } catch (error) {
     console.error("Something went wrong connecting to the database");
     console.error({ error });
@@ -19,6 +19,10 @@ async function databaseHealthCheck(connection: Database) {
   console.groupEnd();
 }
 
-export { db, databaseHealthCheck };
+export { db };
 
-export default [databaseHealthCheck, createUserTable, seedUserTable].forEach((fn) => fn(db));
+export const makeDatabaseConnection = () => {
+  databaseHealthCheck(db);
+  createUserTable(db);
+  seedUserTable(db);
+};

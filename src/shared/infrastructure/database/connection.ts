@@ -1,8 +1,7 @@
-import { drizzle } from "drizzle-orm/better-sqlite3";
-import Database from "better-sqlite3";
+import SqliteDatabase from "bun:sqlite";
+import { drizzle } from "drizzle-orm/bun-sqlite";
 
-const sqlite = new Database(":memory:", { strict: true });
-
+const sqlite = new SqliteDatabase(":memory:", { strict: true });
 export const db = drizzle(sqlite);
 
 export type Database = typeof db;
