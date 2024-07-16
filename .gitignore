@@ -172,7 +172,7 @@ dist
 .idea
 
 # Zed based IDEs
-.zed
+#.zed
 
 # Finder (MacOS) folder config
 .DS_Store
