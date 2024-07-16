@@ -27,6 +27,7 @@
         "vitest": "^2.0.0"
     },
     "dependencies": {
+        "better-sqlite3": "^11.1.2",
         "class-validator": "^0.14.1",
         "drizzle-orm": "^0.32.0",
         "hono": "^4.4.13",

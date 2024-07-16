@@ -1,38 +1,24 @@
-import "./tables";
 import { sql } from "drizzle-orm";
 import { db } from "./connection";
-import { generateFakeUsers } from "./seeds/users";
-import { users } from "./tables/users";
-import type { InsertUser } from "./tables/users";
+import type { Database } from "./connection";
+import { users, createUserTable, seedUserTable } from "./users";
 
 export const table = {
-	users,
+  users,
 };
 
-async function databaseHealthCheck(connection: typeof db) {
-	console.group("Database connection");
-	try {
-		const result = connection.get<string[]>(
-			sql`SELECT datetime("now") as now;`,
-		);
-		console.info(`Database is up, created at ${result[0]}`);
-	} catch (error) {
-		console.error("Something went wrong connecting to the database");
-		console.error({ error });
-	}
-	console.groupEnd();
+async function databaseHealthCheck(connection: Database) {
+  console.group("Database connection");
+  try {
+    const result = connection.get<Record<string, string>>(sql`select datetime('now') as now;`);
+    console.info(`Database is up, created at ${result.now}`);
+  } catch (error) {
+    console.error("Something went wrong connecting to the database");
+    console.error({ error });
+  }
+  console.groupEnd();
 }
-
-const seedDatabase = async () => {
-	await Promise.all([
-		...generateFakeUsers(100).map(async (user: InsertUser) => {
-			return db.insert(table.users).values(user).run();
-		}),
-	]);
-	console.info("Database has been seeded");
-};
-seedDatabase();
 
 export { db, databaseHealthCheck };
 
-export default databaseHealthCheck(db);
+export default [databaseHealthCheck, createUserTable, seedUserTable].forEach((fn) => fn(db));
