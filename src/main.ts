@@ -1,13 +1,7 @@
-import { makeDatabaseConnection } from "./shared/infrastructure/database";
-import { Hono } from "hono";
-import { healthRouter } from "./modules/common/useCases/getHealth";
-import { usersRouter } from "./modules/users";
+import "~/shared/infrastructure/database";
 
-makeDatabaseConnection();
-
-const app = new Hono();
-
-app.route("/", healthRouter);
-app.route("/", usersRouter);
-
-export default app;
+import app from "~/shared/infrastructure/api";
+export default {
+  port: 3000,
+  fetch: app.fetch,
+};
