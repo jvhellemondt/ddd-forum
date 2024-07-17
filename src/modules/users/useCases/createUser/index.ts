@@ -1,7 +1,7 @@
 import { Hono } from "hono";
-import { userCreateView } from "./view";
+import { createUserView } from "./view";
 
 const router = new Hono();
-router.post("/new", userCreateView);
+router.post("/new", createUserView);
 
 export const userCreateRouter = router;
