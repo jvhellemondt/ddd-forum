@@ -4,4 +4,4 @@ import { createUserView } from "./view";
 const router = new Hono();
 router.post("/new", createUserView);
 
-export const userCreateRouter = router;
+export const createUserRouter = router;
