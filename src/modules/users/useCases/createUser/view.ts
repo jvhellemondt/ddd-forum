@@ -3,21 +3,15 @@ import type { Context } from "hono";
 import { Err, type Result, match } from "oxide.ts";
 import { ulid } from "ulid";
 import { CommonErrors } from "~/shared/common/errors";
-import type { Maybe } from "~/shared/common/types";
 import type { User } from "~/shared/infrastructure/database/models/users";
 import { type CreateUserControllerErrors, createUserController } from "./controller";
 import { pick } from "lodash-es";
+import { buildErrorResponse, buildResponse } from "~/shared/utils/http";
 
 // Handling user input
 // Displaying data
 
 type CreateUserViewErrors = CreateUserControllerErrors | CommonErrors.ServerError | CommonErrors.UnexpectedServerError;
-
-const buildResponse = ({ error, data }: { error?: Maybe<CreateUserViewErrors>; data?: Maybe<Partial<User>> }) => ({
-  error,
-  data,
-  success: !error,
-});
 
 export const createUserView = async (context: Context) => {
   let createUserResult: Result<User, CreateUserViewErrors>;
@@ -34,43 +28,15 @@ export const createUserView = async (context: Context) => {
 
   return match(createUserResult, {
     Ok: (data: User) => {
-      context.status(201);
       const user = pick(data, ["id", "email", "username", "firstName", "lastName"]);
-      return context.json(buildResponse({ data: user }));
+      return buildResponse<void, User>(context)({ data: user }, 201);
     },
     Err: [
-      [
-        CommonErrors.ValidationError,
-        (err) => {
-          context.status(400);
-          return context.json(buildResponse({ error: err }));
-        },
-      ],
-      [
-        UserErrors.UsernameAlreadyTaken,
-        (err) => {
-          context.status(409);
-          return context.json(buildResponse({ error: err }));
-        },
-      ],
-      [
-        UserErrors.EmailAlreadyInUse,
-        (err) => {
-          context.status(409);
-          return context.json(buildResponse({ error: err }));
-        },
-      ],
-      [
-        CommonErrors.ServerError,
-        (err) => {
-          context.status(500);
-          return context.json(buildResponse({ error: err }));
-        },
-      ],
+      [CommonErrors.ValidationError, buildErrorResponse<CreateUserViewErrors>(context)(400)],
+      [UserErrors.UsernameAlreadyTaken, buildErrorResponse<CreateUserViewErrors>(context)(409)],
+      [UserErrors.EmailAlreadyInUse, buildErrorResponse<CreateUserViewErrors>(context)(409)],
+      [CommonErrors.ServerError, buildErrorResponse<CreateUserViewErrors>(context)(500)],
     ],
-    _: () => {
-      context.status(500);
-      return context.json(buildResponse({ error: CommonErrors.UnexpectedServerError }));
-    },
+    _: () => buildErrorResponse<CreateUserViewErrors>(context)(500)(CommonErrors.UnexpectedServerError),
   });
 };

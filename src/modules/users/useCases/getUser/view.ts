@@ -5,22 +5,16 @@ import { UserErrors } from "@/users/users.errors";
 import type { Context } from "hono";
 import { Err, type Result, match } from "oxide.ts";
 import { CommonErrors } from "~/shared/common/errors";
-import type { Maybe } from "~/shared/common/types";
 import type { User } from "~/shared/infrastructure/database/models/users";
 import { type GetUserControllerErrors, getUserController } from "./controller";
 import { pick } from "lodash-es";
+import { buildErrorResponse, buildResponse } from "~/shared/utils/http";
 
 type GetUserViewErrors =
   | GetUserControllerErrors
   | CommonErrors.ClientError
   | CommonErrors.ServerError
   | CommonErrors.UnexpectedServerError;
-
-const buildResponse = ({ error, data }: { error?: Maybe<GetUserViewErrors>; data?: Maybe<Partial<User>> }) => ({
-  error,
-  data,
-  success: !error,
-});
 
 export const getUserView = async (context: Context) => {
   let getUserResult: Result<User, GetUserViewErrors>;
@@ -32,36 +26,14 @@ export const getUserView = async (context: Context) => {
 
   return match(getUserResult, {
     Ok: (data: User) => {
-      context.status(200);
       const user = pick(data, ["id", "email", "username", "firstName", "lastName"]);
-      return context.json(buildResponse({ data: user }));
+      return buildResponse<void, User>(context)({ data: user }, 200);
     },
     Err: [
-      [
-        CommonErrors.ClientError,
-        (err) => {
-          context.status(400);
-          return context.json(buildResponse({ error: err }));
-        },
-      ],
-      [
-        UserErrors.UserNotFound,
-        (err) => {
-          context.status(404);
-          return context.json(buildResponse({ error: err }));
-        },
-      ],
-      [
-        CommonErrors.ServerError,
-        (err) => {
-          context.status(500);
-          return context.json(buildResponse({ error: err }));
-        },
-      ],
+      [CommonErrors.ClientError, buildErrorResponse<GetUserViewErrors>(context)(400)],
+      [UserErrors.UserNotFound, buildErrorResponse<GetUserViewErrors>(context)(404)],
+      [CommonErrors.ServerError, buildErrorResponse<GetUserViewErrors>(context)(500)],
     ],
-    _: () => {
-      context.status(500);
-      return context.json(buildResponse({ error: CommonErrors.UnexpectedServerError }));
-    },
+    _: () => buildErrorResponse<GetUserViewErrors>(context)(500)(CommonErrors.UnexpectedServerError),
   });
 };
