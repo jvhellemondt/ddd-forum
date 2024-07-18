@@ -26,7 +26,6 @@ export const editUserModel = async (
 	input: EditUser,
 	userId: number,
 ): Promise<Result<User, EditUserModelErrors>> => {
-	console.log({ userId });
 	const result = await getUserById(userId);
 	if (!result.length) return Err(UserErrors.UserNotFound);
 	const user = result[0];

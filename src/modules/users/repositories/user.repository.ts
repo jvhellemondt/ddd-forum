@@ -4,7 +4,6 @@ import { models } from "~/shared/infrastructure/database/models";
 import { lower } from "~/shared/utils/sql";
 
 export const getUserById = async (value: number) => {
-	console.log({ value });
 	return await db.select().from(models.users).where(eq(models.users.id, value));
 };
 
