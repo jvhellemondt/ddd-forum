@@ -31,14 +31,14 @@ export const editUserModel = async (
 	if (!result.length) return Err(UserErrors.UserNotFound);
 	const user = result[0];
 
-	if (input.username && user.username != input.username) {
+	if (input.username && user.username !== input.username) {
 		const userByUsername = await getUserByUsername(input.username);
-		if (!!userByUsername.length) return Err(UserErrors.UsernameAlreadyTaken);
+		if (userByUsername.length) return Err(UserErrors.UsernameAlreadyTaken);
 	}
 
-	if (input.email && user.email != input.email) {
+	if (input.email && user.email !== input.email) {
 		const userByEmail = await getUserByEmail(input.email);
-		if (!!userByEmail.length) return Err(UserErrors.EmailAlreadyInUse);
+		if (userByEmail.length) return Err(UserErrors.EmailAlreadyInUse);
 	}
 
 	const [updatedUser] = await db

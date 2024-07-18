@@ -1,5 +1,5 @@
-export const enum UserErrors {
-  UsernameAlreadyTaken = "UserNameAlreadyTaken",
-  EmailAlreadyInUse = "EmailAlreadyInUse",
-  UserNotFound = "UserNotFound",
+export enum UserErrors {
+	UsernameAlreadyTaken = "UserNameAlreadyTaken",
+	EmailAlreadyInUse = "EmailAlreadyInUse",
+	UserNotFound = "UserNotFound",
 }

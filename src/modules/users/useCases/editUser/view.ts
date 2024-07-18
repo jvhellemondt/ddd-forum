@@ -23,7 +23,7 @@ const buildResponse = ({
 }: { error?: Maybe<EditUserViewErrors>; data?: Maybe<User> }) => ({
 	error,
 	data,
-	success: !Boolean(error),
+	success: !error,
 });
 
 export const editUserView = async (context: Context) => {
