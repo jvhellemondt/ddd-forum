@@ -1,6 +1,6 @@
-export const enum CommonErrors {
-  ValidationError = "ValidationError",
-  ServerError = "ServerError",
-  UnexpectedServerError = "UnexpectedServerError",
-  ClientError = "ClientError",
+export enum CommonErrors {
+	ValidationError = "ValidationError",
+	ServerError = "ServerError",
+	UnexpectedServerError = "UnexpectedServerError",
+	ClientError = "ClientError",
 }
