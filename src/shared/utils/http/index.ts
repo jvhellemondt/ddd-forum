@@ -19,4 +19,4 @@ export const buildErrorResponse =
 	<E>(context: Context) =>
 	(code: StatusCode = 500) =>
 	(error: E) =>
-		buildResponse(context)<E>({ error }, code);
+		buildResponse(context)({ error }, code);

@@ -14,7 +14,6 @@
         "lint": "biome check ./src --write",
         "lint:fix": "biome check ./src --fix",
         "test": "NODE_ENV=test bun test --watch",
-        "test:cov": "NODE_ENV=test vitest --coverage",
         "type:check": "tsc --noEmit"
     },
     "devDependencies": {
