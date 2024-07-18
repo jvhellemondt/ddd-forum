@@ -1,9 +1,6 @@
-import { isString } from "class-validator";
 import { sql } from "drizzle-orm";
+import { SQLiteColumn } from "drizzle-orm/sqlite-core";
 
-export const lower = (value: unknown) => {
-	if (isString(value)) return sql`lower(${value})`;
-	throw new Error(
-		"UnexpectedServerError in sql/lower. Value is not of type string.",
-	);
+export const lower = (value: SQLiteColumn) => {
+  return sql`lower(${value})`;
 };
