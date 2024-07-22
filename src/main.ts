@@ -1,10 +1,7 @@
-import { Hono } from "hono";
+import "~/shared/infrastructure/database";
 
-const app = new Hono();
-
-app.get("/health", (context) => {
-  context.status(200);
-  return context.text("OK");
-});
-
-export default app;
+import app from "~/shared/infrastructure/api";
+export default {
+	port: 3000,
+	fetch: app.fetch,
+};

@@ -11,9 +11,9 @@
         "dev": "bun --hot --watch src/main.ts",
         "build": "bun build ./src/main.ts --splitting --outdir=./dist --target=bun --tsconfig=tsconfig.build.json",
         "start": "NODE_ENV=production bun dist/main.js",
-        "lint": "biome check --write ./src",
-        "test": "NODE_ENV=test vitest --watch",
-        "test:cov": "NODE_ENV=test vitest --coverage",
+        "lint": "biome check ./src --write",
+        "lint:fix": "biome check ./src --fix",
+        "test": "NODE_ENV=test bun test --watch",
         "type:check": "tsc --noEmit"
     },
     "devDependencies": {
@@ -22,14 +22,14 @@
         "@total-typescript/ts-reset": "^0.5.1",
         "@types/bun": "latest",
         "@types/lodash-es": "^4.17.12",
-        "vite-tsconfig-paths": "^4.3.2",
-        "vitest": "^2.0.0"
+        "drizzle-kit": "^0.23.0"
     },
     "dependencies": {
-        "hono": "^4.4.13",
         "class-validator": "^0.14.1",
-        "oxide.ts": "^1.1.0",
+        "drizzle-orm": "^0.32.0",
+        "hono": "^4.4.13",
         "lodash-es": "^4.17.21",
+        "oxide.ts": "^1.1.0",
         "ulid": "^2.3.0"
     },
     "peerDependencies": {
